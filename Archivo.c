@@ -1,29 +1,51 @@
-
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
-int main(int argc, char const *argv[]){
-	
+char *trim(char *str)
+{
+    size_t len = 0;
+    char *frontp = str;
+    char *endp = NULL;
+    if( str == NULL ) { return NULL; }
+    if( str[0] == '\0' ) { return str; }
+    len = strlen(str);
+    endp = str + len;
+    while( isspace((unsigned char) *frontp) ) { ++frontp; }
+    if( endp != frontp )
+    {
+        while( isspace((unsigned char) *(--endp)) && endp != frontp ) {}
+    }
+    if( frontp != str && endp == frontp )
+            *str = '\0';
+    else if( str + len - 1 != endp )
+            *(endp + 1) = '\0';
+    endp = str;
+    if( frontp != str )
+    {
+            while( *frontp ) { *endp++ = *frontp++; }
+            *endp = '\0';
+    }
+
+    return str;
+    
+}
+int main()
+{
 	FILE *aarchivo;
 	char linea[10];
-	
-	aarchivo = fopen("ids.txt", "r");
+	aarchivo = fopen("ids_unix.txt", "r");
 	if(aarchivo == NULL)
-	
-	
-
 	{
-		
-		printf("Error al abrir el archivo.\n");
+		printf("Error al abrir el archivo");
 		return(1);
-		
 	}
-	
-
-	fgets(linea, 10, aarchivo);
 	while( fgets ( linea, 10, aarchivo ) != NULL )
-	printf("Este es el resultado %s", linea);
-	
+    {
+        trim(linea);
+        printf("0%s@ulsaoaxaca.edu.mx\n",linea);
+    }
+
 	fclose(aarchivo);
-	
 }
